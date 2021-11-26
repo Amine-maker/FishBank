@@ -40,38 +40,115 @@ public class BounceyDot {
     public class TestPane extends JPanel {
 
         private int x = 0;
-        private int y = 100;
-        private int radius = 20;
-        private int xDelta = 2;
+        private int y = 0;
+        private int radius = 10;
+        // private double randomDirectionX, randomDirectionY;
+        private double xDelta = 0.5;
+        private int yDelta = (int)Math.floor(Math.random()*(20-1+1)+1);
+        private boolean initDirection = true;
+        private String direction = "R";
 
         public TestPane() {
-            Timer timer = new Timer(40, new ActionListener() {
+
+
+
+            Timer timer = new Timer(10, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    y += xDelta;
-                    if (y + (radius * 2) > getWidth()) {
-                        y = getWidth() - (radius * 2);
-                        xDelta *= -1;
-                    } else if (y < 0) {
-                        y = 0;
-                        xDelta *= -1;
-                    }
+
+                    //if(initDirection){
+                    //}
+
                     repaint();
                 }
             });
             timer.start();
         }
+/*
+        public boolean isCollision()  {
+            System.out.println(y + (radius * 2) > (getWidth() - 100) );
+
+            boolean collised = false;
+
+            if(y + (radius * 2) >= (getWidth() - 100)){
+                initDirection = false;
+               // yDelta = (int)Math.floor(Math.random()*(20-1+1)+1);
+                //yDelta = 1 * Math.random();
+                y -= yDelta;
+            }
+            if(x + (radius * 2) >= (getWidth() - 100)){
+                initDirection = false;
+                xDelta = (int)Math.floor(Math.random()*(20-1+1)+1);
+                x -= xDelta;
+            }
+
+            return collised;
+        };
+*/
+        public boolean isCollisionX(int x)  {
+
+            boolean collised = false;
+
+            if(x + (radius * 2) >= (getWidth()) || x + (radius * 2) <=  0){
+                collised = true;
+            }
+
+            return collised;
+        };
+
+        public boolean isCollisionY(int y)  {
+
+            boolean collised = false;
+
+            if(y + (radius * 2) >= (getWidth()) || y + (radius * 2) <= 0 ){
+                collised = true;
+            }
+
+            return collised;
+        };
 
         @Override
         public Dimension getPreferredSize() {
-            return new Dimension(400, 400);
+            return new Dimension(800, 800);
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.setColor(Color.RED);
-            g.fillOval(x, y - radius, radius * 4, radius * 4);
+
+            generatePoint(g);
+
+            //g.fillOval(x + 10 , (y + 10) - radius, radius , radius );
+
+        }
+
+        protected void generatePoint(Graphics g) {
+
+            double randomDirectionX = Math.random();
+            double randomDirectionY = Math.random();
+          
+
+            if(randomDirectionX < 0.5){
+                randomDirectionX = 5.0;
+            }else {
+                randomDirectionX = -5.0;
+            }
+
+            if(randomDirectionY < 0.5){
+                randomDirectionY = 5.0;
+            }else {
+                randomDirectionY = -5.0;
+            }
+
+            if(isCollisionX(x)) randomDirectionX *= -1;
+            if(isCollisionY(y)) randomDirectionY *= -1;
+
+            x += (int) randomDirectionX * (int)Math.floor(Math.random()*(3-1+1)+1);
+            y += (int) randomDirectionY * (int)Math.floor(Math.random()*(3-1+1)+1);
+
+            g.fillOval(x, y - radius, radius , radius );
+
         }
     }
 
