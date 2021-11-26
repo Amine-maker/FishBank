@@ -5,7 +5,7 @@ import java.util.List;
 
 public class FishBank {
 
-    private ArrayList<projects.Fish> fish = new ArrayList<Fish>();
+    private ArrayList<Fish> fish = new ArrayList<Fish>();
     private int height;
     private int width;
     private int angle;
