@@ -8,7 +8,6 @@ public class FishBank {
     private int angle;
 
     public FishBank(int number) {
-
     }
 
     public ArrayList<Fish> getFish() {
