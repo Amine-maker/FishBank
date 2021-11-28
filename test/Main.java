@@ -1,56 +1,59 @@
-package test;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 public class Main extends JPanel {
 
     static int width = 800;
     static int height = 800;
 
-    private static int numberOfBalls = 500;
+    private static int numberOfBalls = 600;
 
-    static ArrayList<Ball> balls = new ArrayList<Ball>(numberOfBalls);
+    static FishBank fishs = new FishBank(numberOfBalls);
+
     public Main() {
         setVisible(true);
     }
 
-    public static void main(String[] args) throws InterruptedException{
-        JFrame f = new JFrame("Hello");
+    public static void main(String[] args) throws InterruptedException {
+        JFrame f = new JFrame("FishBank");
         f.setSize(width, height);
         Main obj = new Main();
-        obj.addMouseListener(new MyListener(obj));
         f.add(obj);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        for(int i=0; i < numberOfBalls; i++){
-            Ball b = new Ball(obj);
-            balls.add(b);
+        for (int i = 0; i < numberOfBalls; i++) {
+            Fish fish = new Fish(obj);
+            fishs.getFish().add(fish);
         }
-        while (true){
+        while (true) {
+
             obj.repaint();
+            obj.getPosition();
             Thread.sleep(10);
         }
     }
 
     public void paint(Graphics g) {
         super.paint(g);
-        for(Ball b:balls)
-            b.paint(g);
+        for (int i = 0; i < fishs.getFish().size() - 1; i++) {
+            Fish fish = fishs.getFish().get(i);
+            fish.x = fishs.getFish().get(i + 1).x + 2;
+            fish.y = fishs.getFish().get(i + 1).y - 2;
+            fish.paint(g);
+        }
 
-        g.setColor(Color.GREEN);
-        g.fillOval(MyListener.x, MyListener.y, 10, 10);
         update();
     }
 
-    public void update(){
-        for(Ball b:balls)
-            b.move(400, 400);
+    public void update() {
+        for (Fish f : fishs.getFish())
+            f.move(width / 2, height / 2);
     }
 
-
+    public void getPosition() {
+        System.out.println("Poisson 1 : " + fishs.getFish().get(1).x);
+        System.out.println("Poisson 2: " + fishs.getFish().get(2).x);
+    }
 
 }
